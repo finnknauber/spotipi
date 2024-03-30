@@ -118,7 +118,7 @@ def spotify():
 
 
 @spotiApp.route("/spotify-callback")
-def spotify():
+def spotifycallback():
     code = request.args.get("code")
     get_access_token(code)
     return redirect("/")
