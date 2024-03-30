@@ -5,7 +5,7 @@ import urllib
 import os
 import socket
 from .write import writeTag
-from .spotify import get_auth_domain, get_access_token
+from .spotify import get_auth_domain, get_access_token, print_top
 
 wifiApp = Flask("wifi")
 spotiApp = Flask("spotipi")
@@ -78,6 +78,10 @@ def connect_wifi(ssid, password):
 
 @spotiApp.route("/")
 def index():
+    try:
+        print_top()
+    except:
+        print("no top")
     return render_template_string(
         """
 <!DOCTYPE html>
