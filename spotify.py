@@ -11,7 +11,7 @@ auth = SpotifyOAuth(
     client_id=os.environ["SPOTIFY_CLIENT_ID"],
     client_secret=os.environ["SPOTIFY_CLIENT_SECRET"],
     redirect_uri="https://spotipi-auth.vercel.app/",
-    scope="user-library-read",
+    scope="user-library-read streaming",
     open_browser=False,
 )
 
@@ -43,3 +43,8 @@ def print_top():
     for idx, item in enumerate(results["items"]):
         track = item["track"]
         print(idx, track["artists"][0]["name"], " - ", track["name"])
+
+
+def play_test():
+    sp = spotipy.Spotify(auth_manager=auth)
+    sp.start_playback(uris=["spotify:track:6rqhFdgfvDZJKnwR0ehKkG"])

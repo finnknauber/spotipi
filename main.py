@@ -5,7 +5,13 @@ import urllib
 import os
 import socket
 from write import writeTag
-from spotify import get_auth_domain, get_access_token, print_top, get_ip_address
+from spotify import (
+    get_auth_domain,
+    get_access_token,
+    print_top,
+    get_ip_address,
+    play_test,
+)
 
 wifiApp = Flask("wifi")
 spotiApp = Flask("spotipi")
@@ -103,6 +109,7 @@ def index():
 def test():
     try:
         print_top()
+        play_test()
     except:
         print("no top")
     return render_template_string(
