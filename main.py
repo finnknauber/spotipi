@@ -78,10 +78,6 @@ def connect_wifi(ssid, password):
 
 @spotiApp.route("/")
 def index():
-    try:
-        print_top()
-    except:
-        print("no top")
     return render_template_string(
         """
 <!DOCTYPE html>
@@ -97,6 +93,29 @@ def index():
         <input type="text" name="link" placeholder="Spotify Link">
         <button type="submit">Write</button>
     </form>
+</body>
+</html>
+"""
+    )
+
+
+@spotiApp.route("/test")
+def index():
+    try:
+        print_top()
+    except:
+        print("no top")
+    return render_template_string(
+        """
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SpotiPi</title>
+</head>
+<body>
+    testin
 </body>
 </html>
 """
