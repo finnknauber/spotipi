@@ -47,4 +47,8 @@ def print_top():
 
 def play_test():
     sp = spotipy.Spotify(auth_manager=auth)
-    sp.start_playback(uris=["spotify:track:6rqhFdgfvDZJKnwR0ehKkG"])
+    print(sp.devices())
+    sp.start_playback(
+        device_id=sp.devices()["devices"][0]["id"],
+        uris=["spotify:track:6rqhFdgfvDZJKnwR0ehKkG"],
+    )
