@@ -3,6 +3,7 @@ from spotipy.oauth2 import SpotifyOAuth
 import urllib.parse
 import os
 from dotenv import load_dotenv
+import socket
 
 load_dotenv()
 
@@ -22,6 +23,17 @@ def get_auth_domain(redirect: str):
 
 def get_access_token(code: str):
     auth.get_access_token(code)
+
+
+def get_ip_address():
+    try:
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.connect(("8.8.8.8", 80))
+        ip_address = s.getsockname()[0]
+        s.close()
+        return ip_address
+    except Exception as e:
+        return f"Error: {e}"
 
 
 def print_top():

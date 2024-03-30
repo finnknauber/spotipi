@@ -5,7 +5,7 @@ import urllib
 import os
 import socket
 from write import writeTag
-from spotify import get_auth_domain, get_access_token, print_top
+from spotify import get_auth_domain, get_access_token, print_top, get_ip_address
 
 wifiApp = Flask("wifi")
 spotiApp = Flask("spotipi")
@@ -132,8 +132,9 @@ def wifi():
 
 @spotiApp.route("/spotify")
 def spotify():
-    ip = socket.gethostbyname(socket.gethostname())
-    return redirect(get_auth_domain(f"http://{ip}:{SPOTIFY_PORT}/spotify-callback"))
+    return redirect(
+        get_auth_domain(f"http://{get_ip_address()}:{SPOTIFY_PORT}/spotify-callback")
+    )
 
 
 @spotiApp.route("/spotify-callback")
