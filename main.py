@@ -1,12 +1,17 @@
-from flask import Flask, render_template_string, request
+from operator import ge
+from flask import Flask, render_template_string, request, redirect
 from PyAccessPoint import pyaccesspoint
 import urllib
 import os
-from write import writeTag
+import socket
+from .write import writeTag
+from .spotify import get_auth_domain, get_access_token
 
 wifiApp = Flask("wifi")
 spotiApp = Flask("spotipi")
 access_point = pyaccesspoint.AccessPoint(ssid="SpotiPi Setup")
+
+SPOTIFY_PORT = 80
 
 
 @wifiApp.route("/")
@@ -48,21 +53,21 @@ def wifi():
 
 def connect_wifi(ssid, password):
     config_lines = [
-        'ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev',
-        'update_config=1',
-        'country=US',
-        '\n',
-        'network={',
+        "ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev",
+        "update_config=1",
+        "country=US",
+        "\n",
+        "network={",
         '\tssid="{}"'.format(ssid),
         '\tpsk="{}"'.format(password),
-        '}'
-        ]
-    config = '\n'.join(config_lines)
+        "}",
+    ]
+    config = "\n".join(config_lines)
 
-    #give access and writing. may have to do this manually beforehand
+    # give access and writing. may have to do this manually beforehand
     os.popen("sudo chmod a+w /etc/wpa_supplicant/wpa_supplicant.conf")
 
-    #writing to file
+    # writing to file
     with open("/etc/wpa_supplicant/wpa_supplicant.conf", "w") as wifi:
         wifi.write(config)
 
@@ -83,6 +88,7 @@ def index():
     <title>SpotiPi</title>
 </head>
 <body>
+    <button onclick="location.href='/spotify'">Spotify</button>
     <form action="/write" method="post">
         <input type="text" name="link" placeholder="Spotify Link">
         <button type="submit">Write</button>
@@ -92,6 +98,7 @@ def index():
 """
     )
 
+
 @spotiApp.route("/write", methods=["POST"])
 def wifi():
     link = request.form["link"]
@@ -100,8 +107,21 @@ def wifi():
     return "Written"
 
 
+@spotiApp.route("/spotify")
+def spotify():
+    ip = socket.gethostbyname(socket.gethostname())
+    return redirect(get_auth_domain(f"http://{ip}:{SPOTIFY_PORT}/spotify-callback"))
+
+
+@spotiApp.route("/spotify-callback")
+def spotify():
+    code = request.args.get("code")
+    get_access_token(code)
+    return redirect("/")
+
+
 def start_spotipi():
-    spotiApp.run(debug=False, host="0.0.0.0", port=4243)
+    spotiApp.run(debug=False, host="0.0.0.0", port=SPOTIFY_PORT)
 
 
 def internet_on():
@@ -122,4 +142,3 @@ if not internet_on():
 else:
     print("wifi connected")
     start_spotipi()
-
