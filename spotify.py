@@ -50,5 +50,5 @@ def play_test():
     print(sp.devices())
     sp.start_playback(
         device_id=sp.devices()["devices"][0]["id"],
-        uris=["spotify:track:6rqhFdgfvDZJKnwR0ehKkG"],
+        uris=["spotify:track:48ZXFXcFIkWWsYHaGX3c0D"],
     )
