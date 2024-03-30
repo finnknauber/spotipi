@@ -4,8 +4,8 @@ from PyAccessPoint import pyaccesspoint
 import urllib
 import os
 import socket
-from .write import writeTag
-from .spotify import get_auth_domain, get_access_token, print_top
+from write import writeTag
+from spotify import get_auth_domain, get_access_token, print_top
 
 wifiApp = Flask("wifi")
 spotiApp = Flask("spotipi")
