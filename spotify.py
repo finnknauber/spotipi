@@ -2,6 +2,9 @@ import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 import urllib.parse
 import os
+import dotenv
+
+dotenv.load_dotenv()
 
 auth = SpotifyOAuth(
     client_id=os.environ["SPOTIFY_CLIENT_ID"],
