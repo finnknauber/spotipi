@@ -100,7 +100,7 @@ def index():
 
 
 @spotiApp.route("/test")
-def index():
+def test():
     try:
         print_top()
     except:
