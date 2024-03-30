@@ -11,7 +11,7 @@ auth = SpotifyOAuth(
     client_id=os.environ["SPOTIFY_CLIENT_ID"],
     client_secret=os.environ["SPOTIFY_CLIENT_SECRET"],
     redirect_uri="https://spotipi-auth.vercel.app/",
-    scope="user-library-read streaming",
+    scope="user-library-read streaming user-modify-playback-state",
     open_browser=False,
 )
 
