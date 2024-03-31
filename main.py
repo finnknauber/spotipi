@@ -163,9 +163,9 @@ def reader(writing):
     reader.READER.logger.disabled = True
     try:
         while True:
+            print("test", writing)
+            time.sleep(1)
             while writing:
-                print("test")
-                time.sleep(1)
             id, text = reader.read_no_block()
             if id:
                 text = urllib.parse.unquote(text)
