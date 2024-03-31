@@ -13,17 +13,36 @@
             const form = document.querySelector("form");
             const link = form.elements.link.value;
             if (!link) return
-            await fetch("/write?link=" + encodeURIComponent(link), {
-                method: "POST",
-            })
+            document.getElementById("written").style.display = "none";
+            document.getElementById("write").style.display = "none";
+            document.getElementById("loader").style.display = "flex";
+            try {
+                await fetch("/write?link=" + encodeURIComponent(link), {
+                    method: "POST",
+                })
+            } finally {
+                document.getElementById("loader").style.display = "none";
+                document.getElementById("written").style.display = "flex";
+                setTimeout(() => {
+                    document.getElementById("written").style.display = "none";
+                    document.getElementById("write").style.display = "block";
+                }, 1000);
+            }
         }
     </script>
     <span class="text-center text-2xl font-medium">Place thingy on majig!</span>
     <form onsubmit="writeTag(event)" class="flex flex-col gap-4 items-center justify-center mx-4">
         <input type="text" name="link" placeholder="Spotify Link" class="bg-white text-black placeholder:text-black/50 px-4 w-full max-w-lg rounded-md py-2">
-        <button type="submit" class="rounded-full bg-[#1DB954] px-10 font-medium py-2 hover:brightness-90 transition-all">
+        <button id="write" type="submit" class="rounded-full bg-[#1DB954] px-10 font-medium h-10 hover:brightness-90 transition-all">
             Write Link To Tag
         </button>
+        <div id="loader" class="flex flex-col h-10 items-center justify-center" style="display:none">
+            <svg class="animate-spin" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-loader-circle"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
+        </div>
+        <div id="written" class="flex flex-row gap-2 h-10 items-center justify-center" style="display:none">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check"><path d="M20 6 9 17l-5-5"/></svg>
+            <span class="text-lg font-medium leading-none">Written</span>
+        </div>
     </form>
     <button onclick="location.href='/spotify'" class="mx-auto opacity-75 text-white underline text-sm"> 
         Sign In With Spotify
