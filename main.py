@@ -134,9 +134,12 @@ def test():
 
 @spotiApp.route("/write", methods=["POST"])
 def wifi():
+    global writing
     link = request.form["link"]
     print(link)
+    writing = True
     writeTag(link)
+    writing = False
     return "Written"
 
 
@@ -154,11 +157,13 @@ def spotifycallback():
     return redirect("/")
 
 
-def reader():
+def reader(writing):
     reader = ExtendedMFRC522()
     reader.READER.logger.disabled = True
     try:
         while True:
+            while writing:
+                pass
             id, text = reader.read_no_block()
             if id:
                 text = urllib.parse.unquote(text)
@@ -173,7 +178,7 @@ def reader():
 
 
 def start_spotipi():
-    threading.Thread(target=reader).start()
+    threading.Thread(target=reader, args=(writing,)).start()
     spotiApp.run(debug=False, host="0.0.0.0", port=SPOTIFY_PORT)
 
 
@@ -193,5 +198,6 @@ if not internet_on():
     access_point.start()
     wifiApp.run(debug=False, host="0.0.0.0", port=4242)
 else:
+    writing = False
     print("wifi connected")
     start_spotipi()
