@@ -166,7 +166,7 @@ def reader():
         while True:
             print("test", event.is_set())
             time.sleep(1)
-            while writing:
+            while False:
                 pass
             id, text = reader.read_no_block()
             if id:
