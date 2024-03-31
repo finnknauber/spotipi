@@ -49,8 +49,10 @@ def play_test(link):
     sp = spotipy.Spotify(auth_manager=auth)
     for device in sp.devices()["devices"]:
         if device["is_active"]:
-            sp.start_playback(
-                device_id=device["id"],
-                uris=["spotify:track:"+link],
-            )
-            return
+            try:
+                sp.start_playback(
+                    device_id=device["id"],
+                    uris=["spotify:track:"+link],
+                )
+            except:
+                print("Error playing")
