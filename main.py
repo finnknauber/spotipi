@@ -176,12 +176,12 @@ def reader():
                         print("New Song, playing", songlink)
                         lastSong = songlink
                         play_test(songlink)
-                    if lastSong == songlink and time.time() > last_read + 3:
+                    elif lastSong == songlink and time.time() > last_read + 3:
                         print("Same song, playing again")
                         play_test(songlink)
-                    last_read = time.time()
                 else:
                     print("not a spotify link: ", text)
+                last_read = time.time()
     finally:
         print("cleaning up reader")
         GPIO.cleanup()
