@@ -1,5 +1,5 @@
 from operator import ge
-from flask import Flask, render_template_string, request, redirect
+from flask import Flask, render_template, render_template_string, request, redirect
 from PyAccessPoint import pyaccesspoint
 import urllib
 import os
@@ -88,25 +88,7 @@ def connect_wifi(ssid, password):
 
 @spotiApp.route("/")
 def index():
-    return render_template_string(
-        """
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SpotiPi</title>
-</head>
-<body>
-    <button onclick="location.href='/spotify'">Spotify</button>
-    <form action="/write" method="post">
-        <input type="text" name="link" placeholder="Spotify Link">
-        <button type="submit">Write</button>
-    </form>
-</body>
-</html>
-"""
-    )
+    return render_template("write.html")
 
 
 @spotiApp.route("/test")
@@ -136,7 +118,7 @@ def test():
 @spotiApp.route("/write", methods=["POST"])
 def wifi():
     global writing
-    link = request.form["link"]
+    link = request.args.get("link")
     print(link)
     event.set()
     writeTag(link)

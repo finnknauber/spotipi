@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>SpotiPi</title>
+</head>
+<body class="flex h-[100dvh] bg-neutral-950 text-white flex-col gap-16 items-stretch justify-center">
+    <script>
+        async function writeTag(e) {
+            e.preventDefault();
+            const form = document.querySelector("form");
+            const link = form.elements.link.value;
+            if (!link) return
+            await fetch("/write?link=" + encodeURIComponent(link), {
+                method: "POST",
+            })
+        }
+    </script>
+    <span class="text-center text-2xl font-medium">Place thingy on majig!</span>
+    <form onsubmit="writeTag(event)" class="flex flex-col gap-4 items-center justify-center mx-4">
+        <input type="text" name="link" placeholder="Spotify Link" class="bg-white text-black placeholder:text-black/50 px-4 w-full max-w-lg rounded-md py-2">
+        <button type="submit" class="rounded-full bg-[#1DB954] px-10 font-medium py-2 hover:brightness-90 transition-all">
+            Write Link To Tag
+        </button>
+    </form>
+    <button onclick="location.href='/spotify'" class="mx-auto opacity-75 text-white underline text-sm"> 
+        Sign In With Spotify
+    </button>
+</body>
+</html>
