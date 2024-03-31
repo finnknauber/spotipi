@@ -57,7 +57,6 @@ def wifi():
     access_point.stop()
     os.system("wpa_supplicant -B -c/etc/wpa_supplicant/wpa_supplicant.conf -i wlan0")
     connect_wifi(ssid, password)
-    wifiApp.stop()
     start_spotipi()
     return "Connecting"
 
@@ -162,6 +161,7 @@ def spotifycallback():
 def reader():
     reader = ExtendedMFRC522()
     reader.READER.logger.disabled = True
+    lastSong = ""
     try:
         while True:
             while event.is_set():
@@ -170,8 +170,14 @@ def reader():
             if id:
                 text = urllib.parse.unquote(text)
                 if text.startswith("https://open.spotify.com/"):
-                    print(text)
-                    play_test(text.split("/")[-1].split("?")[0])
+                    print("Read link: ", text)
+                    songlink = text.split("/")[-1].split("?")[0]
+                    if lastSong != songlink:
+                        lastSong = songlink
+                        play_test(songlink)
+                        last_played = time.time()
+                    elif last_played + 3 < time.time():
+                        play_test(songlink)
                 else:
                     print("not a spotify link: ", text)
     finally:
