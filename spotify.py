@@ -45,7 +45,7 @@ def print_top():
         print(idx, track["artists"][0]["name"], " - ", track["name"])
 
 
-def play_test(link):
+def play_spotify(link):
     sp = spotipy.Spotify(auth_manager=auth)
     for device in sp.devices()["devices"]:
         if device["is_active"]:

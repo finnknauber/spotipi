@@ -9,7 +9,7 @@ from spotify import (
     get_access_token,
     print_top,
     get_ip_address,
-    play_test,
+    play_spotify,
 )
 import urllib
 import time
@@ -93,10 +93,10 @@ def index():
 
 
 @spotiApp.route("/test")
-def test():
+def play_spotify():
     try:
         print_top()
-        play_test()
+        play_spotify()
     except:
         print("no top")
     return render_template_string(
@@ -157,10 +157,10 @@ def reader():
                     if lastSong != songlink:
                         print("New Song, playing", songlink)
                         lastSong = songlink
-                        play_test(songlink)
+                        play_spotify(songlink)
                     elif lastSong == songlink and time.time() > last_read + 3:
                         print("Same song, playing again")
-                        play_test(songlink)
+                        play_spotify(songlink)
                 else:
                     print("not a spotify link: ", text)
                 last_read = time.time()
