@@ -135,7 +135,6 @@ def test():
 
 @spotiApp.route("/write", methods=["POST"])
 def wifi():
-    global writing
     link = request.form["link"]
     print(link)
     event.set()
