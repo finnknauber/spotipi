@@ -17,7 +17,7 @@ import os
 
 
 wifiApp = Flask("wifi")
-spotiApp = Flask("spotipi")
+spotiApp = Flask("spotipi", template_folder="./")
 access_point = pyaccesspoint.AccessPoint(ssid="SpotiPi Setup")
 event = Event()
 
