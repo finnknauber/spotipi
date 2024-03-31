@@ -3,7 +3,7 @@ from flask import Flask, render_template_string, request, redirect
 from PyAccessPoint import pyaccesspoint
 import urllib
 import os
-import socket
+import threading
 from write import writeTag
 from spotify import (
     get_auth_domain,
@@ -12,6 +12,7 @@ from spotify import (
     get_ip_address,
     play_test,
 )
+
 
 wifiApp = Flask("wifi")
 spotiApp = Flask("spotipi")
@@ -151,7 +152,12 @@ def spotifycallback():
     return redirect("/")
 
 
+def reader():
+    print("this is my reader")
+
+
 def start_spotipi():
+    threading.Thread(target=reader).start()
     spotiApp.run(debug=False, host="0.0.0.0", port=SPOTIFY_PORT)
 
 
