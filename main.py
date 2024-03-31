@@ -156,7 +156,7 @@ def spotifycallback():
 
 def reader():
     reader = ExtendedMFRC522()
-    reader.READER.logger.propagate = False
+    reader.READER.logger.disabled = True
     try:
         while True:
             id, text = reader.read_no_block()
