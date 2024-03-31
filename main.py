@@ -7,6 +7,7 @@ import threading
 from write import writeTag
 import RPi.GPIO as GPIO
 from mfrc522 import ExtendedMFRC522
+import time
 from spotify import (
     get_auth_domain,
     get_access_token,
@@ -163,7 +164,8 @@ def reader(writing):
     try:
         while True:
             while writing:
-                pass
+                print("test")
+                time.sleep(1)
             id, text = reader.read_no_block()
             if id:
                 text = urllib.parse.unquote(text)
