@@ -5,6 +5,8 @@ import urllib
 import os
 import threading
 from write import writeTag
+import RPi.GPIO as GPIO
+from mfrc522 import ExtendedMFRC522
 from spotify import (
     get_auth_domain,
     get_access_token,
@@ -153,7 +155,15 @@ def spotifycallback():
 
 
 def reader():
-    print("this is my reader")
+    reader = ExtendedMFRC522()
+    try:
+        while True:
+            id, text = reader.read_no_block()
+            text = urllib.parse.unquote(text)
+            print(text)
+    finally:
+        print("cleaning up reader")
+        GPIO.cleanup()
 
 
 def start_spotipi():
