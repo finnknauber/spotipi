@@ -3,7 +3,7 @@ from flask import Flask, render_template_string, request, redirect
 from PyAccessPoint import pyaccesspoint
 import urllib
 import os
-import threading
+from threading import Thread, Event
 from write import writeTag
 import RPi.GPIO as GPIO
 from mfrc522 import ExtendedMFRC522
@@ -22,6 +22,7 @@ spotiApp = Flask("spotipi")
 access_point = pyaccesspoint.AccessPoint(ssid="SpotiPi Setup")
 
 SPOTIFY_PORT = 80
+event = Event()
 
 
 @wifiApp.route("/")
@@ -138,9 +139,9 @@ def wifi():
     global writing
     link = request.form["link"]
     print(link)
-    writing = True
+    event.set()
     writeTag(link)
-    writing = False
+    event.clear()
     return "Written"
 
 
@@ -158,12 +159,12 @@ def spotifycallback():
     return redirect("/")
 
 
-def reader(writing):
+def reader():
     reader = ExtendedMFRC522()
     reader.READER.logger.disabled = True
     try:
         while True:
-            print("test", writing)
+            print("test", event.is_set())
             time.sleep(1)
             while writing:
                 pass
@@ -181,7 +182,7 @@ def reader(writing):
 
 
 def start_spotipi():
-    threading.Thread(target=reader, args=(writing,)).start()
+    Thread(target=reader).start()
     spotiApp.run(debug=False, host="0.0.0.0", port=SPOTIFY_PORT)
 
 
@@ -201,6 +202,5 @@ if not internet_on():
     access_point.start()
     wifiApp.run(debug=False, host="0.0.0.0", port=4242)
 else:
-    writing = False
     print("wifi connected")
     start_spotipi()
