@@ -50,9 +50,15 @@ def play_test(link):
     for device in sp.devices()["devices"]:
         if device["is_active"]:
             try:
-                sp.start_playback(
-                    device_id=device["id"],
-                    uris=["spotify:"+link],
-                )
+                if link.startswith("track:"):
+                    sp.start_playback(
+                        device_id=device["id"],
+                        uris=["spotify:"+link],
+                    )
+                else:
+                    sp.start_playback(
+                        device_id=device["id"],
+                        context_uri="spotify:"+link,
+                    )
             except:
                 print("Error playing")
