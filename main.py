@@ -162,7 +162,11 @@ def reader():
             id, text = reader.read_no_block()
             if id:
                 text = urllib.parse.unquote(text)
-                print(text)
+                if text.startswith("https://open.spotify.com/"):
+                    print(text)
+                    play_test(text.split("/")[-1].split("?")[0])
+                else:
+                    print("not a spotify link: ", text)
     finally:
         print("cleaning up reader")
         GPIO.cleanup()

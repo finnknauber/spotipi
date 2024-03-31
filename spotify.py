@@ -45,10 +45,10 @@ def print_top():
         print(idx, track["artists"][0]["name"], " - ", track["name"])
 
 
-def play_test():
+def play_test(link):
     sp = spotipy.Spotify(auth_manager=auth)
     print(sp.devices())
     sp.start_playback(
         device_id=sp.devices()["devices"][0]["id"],
-        uris=["spotify:track:48ZXFXcFIkWWsYHaGX3c0D"],
+        uris=["spotify:track:"+link],
     )
