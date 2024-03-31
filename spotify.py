@@ -52,7 +52,7 @@ def play_test(link):
             try:
                 sp.start_playback(
                     device_id=device["id"],
-                    uris=["spotify:track:"+link],
+                    uris=["spotify:"+link],
                 )
             except:
                 print("Error playing")

@@ -1,13 +1,9 @@
-from operator import ge
 from flask import Flask, render_template, render_template_string, request, redirect
 from PyAccessPoint import pyaccesspoint
-import urllib
-import os
+from mfrc522 import ExtendedMFRC522
 from threading import Thread, Event
 from write import writeTag
 import RPi.GPIO as GPIO
-from mfrc522 import ExtendedMFRC522
-import time
 from spotify import (
     get_auth_domain,
     get_access_token,
@@ -15,14 +11,18 @@ from spotify import (
     get_ip_address,
     play_test,
 )
+import urllib
+import time
+import os
 
 
 wifiApp = Flask("wifi")
 spotiApp = Flask("spotipi")
 access_point = pyaccesspoint.AccessPoint(ssid="SpotiPi Setup")
+event = Event()
 
 SPOTIFY_PORT = 80
-event = Event()
+
 
 
 @wifiApp.route("/")
@@ -46,6 +46,7 @@ def index():
 </html>
 """
     )
+
 
 
 # wifi post with form data
@@ -152,7 +153,7 @@ def reader():
             if id:
                 text = urllib.parse.unquote(text)
                 if text.startswith("https://open.spotify.com/"):
-                    songlink = text.split("/")[-1].split("?")[0]
+                    songlink = text.split("/")[-2] + ":" + text.split("/")[-1].split("?")[0]
                     if lastSong != songlink:
                         print("New Song, playing", songlink)
                         lastSong = songlink
@@ -175,7 +176,7 @@ def start_spotipi():
 
 def internet_on():
     try:
-        urllib.request.urlopen("https://spotify.com", timeout=1)
+        urllib.request.urlopen("https://spotify.com", timeout=5)
         return True
     except:
         return False
