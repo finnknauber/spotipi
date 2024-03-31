@@ -170,13 +170,13 @@ def reader():
             if id:
                 text = urllib.parse.unquote(text)
                 if text.startswith("https://open.spotify.com/"):
+                    last_read = time.time()
                     print("Read link: ", text)
                     songlink = text.split("/")[-1].split("?")[0]
                     if lastSong != songlink:
                         lastSong = songlink
                         play_test(songlink)
-                        last_played = time.time()
-                    elif last_played + 3 < time.time():
+                    if lastSong == songlink and time.time() > last_read + 3:
                         play_test(songlink)
                 else:
                     print("not a spotify link: ", text)
