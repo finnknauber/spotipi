@@ -159,8 +159,9 @@ def reader():
     try:
         while True:
             id, text = reader.read_no_block()
-            text = urllib.parse.unquote(text)
-            print(text)
+            if id:
+                text = urllib.parse.unquote(text)
+                print(text)
     finally:
         print("cleaning up reader")
         GPIO.cleanup()
