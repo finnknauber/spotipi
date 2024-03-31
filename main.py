@@ -88,7 +88,7 @@ def connect_wifi(ssid, password):
 
 
 @app.route("/write", methods=["POST"])
-def wifi():
+def write():
     link = request.args.get("link")
     print(link)
     event.set()
