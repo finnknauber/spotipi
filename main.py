@@ -157,10 +157,10 @@ def internet_on():
 if access_point.is_running():
     access_point.stop()
 
-
-app.run(debug=False, host="0.0.0.0", port=80)
-
 if not internet_on():
     access_point.start()
 else:
     start_spotipi()
+
+app.run(debug=False, host="0.0.0.0", port=80)
+
