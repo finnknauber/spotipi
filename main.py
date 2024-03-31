@@ -159,6 +159,7 @@ def spotifycallback():
 
 
 def reader():
+    last_read = time.time()
     reader = ExtendedMFRC522()
     reader.READER.logger.disabled = True
     lastSong = ""
@@ -170,14 +171,16 @@ def reader():
             if id:
                 text = urllib.parse.unquote(text)
                 if text.startswith("https://open.spotify.com/"):
-                    last_read = time.time()
                     print("Read link: ", text)
                     songlink = text.split("/")[-1].split("?")[0]
                     if lastSong != songlink:
+                        print("New Song, playing")
                         lastSong = songlink
                         play_test(songlink)
                     if lastSong == songlink and time.time() > last_read + 3:
+                        print("Same song, playing")
                         play_test(songlink)
+                    last_read = time.time()
                 else:
                     print("not a spotify link: ", text)
     finally:
