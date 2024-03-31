@@ -16,17 +16,18 @@ import time
 import os
 
 
-wifiApp = Flask("wifi")
-spotiApp = Flask("spotipi", template_folder="./")
+app = Flask(__name__, template_folder="./")
 access_point = pyaccesspoint.AccessPoint(ssid="SpotiPi Setup")
 event = Event()
 
 SPOTIFY_PORT = 80
 
 
-
-@wifiApp.route("/")
+@app.route("/")
 def index():
+    if internet_on():
+        return render_template("write.html")
+
     return render_template_string(
         """
 <!DOCTYPE html>
@@ -48,9 +49,8 @@ def index():
     )
 
 
-
 # wifi post with form data
-@wifiApp.route("/wifi", methods=["POST"])
+@app.route("/wifi", methods=["POST"])
 def wifi():
     ssid = request.form["ssid"]
     password = request.form["password"]
@@ -87,36 +87,7 @@ def connect_wifi(ssid, password):
     os.popen("sudo wpa_cli -i wlan0 reconfigure")
 
 
-@spotiApp.route("/")
-def index():
-    return render_template("write.html")
-
-
-@spotiApp.route("/test")
-def test():
-    try:
-        print_top()
-        play_test()
-    except:
-        print("no top")
-    return render_template_string(
-        """
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SpotiPi</title>
-</head>
-<body>
-    testin
-</body>
-</html>
-"""
-    )
-
-
-@spotiApp.route("/write", methods=["POST"])
+@app.route("/write", methods=["POST"])
 def wifi():
     link = request.args.get("link")
     print(link)
@@ -126,14 +97,14 @@ def wifi():
     return "Written"
 
 
-@spotiApp.route("/spotify")
+@app.route("/spotify")
 def spotify():
     return redirect(
         get_auth_domain(f"http://{get_ip_address()}:{SPOTIFY_PORT}/spotify-callback")
     )
 
 
-@spotiApp.route("/spotify-callback")
+@app.route("/spotify-callback")
 def spotifycallback():
     code = request.args.get("code")
     get_access_token(code)
@@ -153,7 +124,9 @@ def reader():
             if id:
                 text = urllib.parse.unquote(text)
                 if text.startswith("https://open.spotify.com/"):
-                    songlink = text.split("/")[-2] + ":" + text.split("/")[-1].split("?")[0]
+                    songlink = (
+                        text.split("/")[-2] + ":" + text.split("/")[-1].split("?")[0]
+                    )
                     if lastSong != songlink:
                         print("New Song, playing", songlink)
                         lastSong = songlink
@@ -171,7 +144,6 @@ def reader():
 
 def start_spotipi():
     Thread(target=reader).start()
-    spotiApp.run(debug=False, host="0.0.0.0", port=SPOTIFY_PORT)
 
 
 def internet_on():
@@ -186,9 +158,9 @@ if access_point.is_running():
     access_point.stop()
 
 
+app.run(debug=False, host="0.0.0.0", port=80)
+
 if not internet_on():
     access_point.start()
-    wifiApp.run(debug=False, host="0.0.0.0", port=4242)
 else:
-    print("wifi connected")
     start_spotipi()
