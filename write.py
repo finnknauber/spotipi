@@ -15,3 +15,8 @@ def writeTag(text):
         finally:
             GPIO.cleanup()
         print("Written")
+
+
+if __name__ == "__main__":
+    text = input("Enter spotify link: ")
+    writeTag(text)
