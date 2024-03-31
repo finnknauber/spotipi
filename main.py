@@ -166,6 +166,7 @@ def reader(writing):
             print("test", writing)
             time.sleep(1)
             while writing:
+                pass
             id, text = reader.read_no_block()
             if id:
                 text = urllib.parse.unquote(text)
