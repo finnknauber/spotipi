@@ -18,6 +18,24 @@ def play_tone(frequency, duration):
         cycles -= 1
 
 
+def play_startup():
+    play_tone(2000, 0.2)
+    time.sleep(0.125)
+    play_tone(2500, 0.3)
+    time.sleep(0.2)
+    play_tone(3000, 0.3)
+    GPIO.output(18, GPIO.LOW)
+    GPIO.cleanup()
+
+def play_setup():
+    play_tone(2000, 0.2)
+    time.sleep(0.125)
+    play_tone(2500, 0.3)
+    time.sleep(0.2)
+    play_tone(2000, 0.3)
+    GPIO.output(18, GPIO.LOW)
+    GPIO.cleanup()
+
 def play_success():
     play_tone(1900, 0.25)
     time.sleep(0.02)
@@ -29,31 +47,20 @@ def play_error():
     play_tone(350, 0.1)
     time.sleep(0.1)
     play_tone(350, 0.4)
+    GPIO.output(18, GPIO.LOW)
+    GPIO.cleanup()
 
-def play_cancel():
-    play_tone(500, 0.25)
-    time.sleep(0.3)
-    play_tone(300, 0.15)
+def play_song():
+    play_tone(7500, 0.05)
+    GPIO.output(18, GPIO.LOW)
+    GPIO.cleanup()
 
-def play_notification():
+def play_wroteSong():
     play_tone(3000, 0.25)
     time.sleep(0.3)
     play_tone(2250, 0.1)
     time.sleep(0.125)
     play_tone(2250, 0.1)
-
-
-# when starting up
-    # playsetup
-    # playstartup
-
-# when connecting to wifi
-    # playsuccess
-    # playerror
-
-# when writing to tag or reading
-    # playsong
-    # wrotesong
-
-play_cancel()
+    GPIO.output(18, GPIO.LOW)
+    GPIO.cleanup()
 
