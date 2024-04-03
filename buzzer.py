@@ -17,22 +17,6 @@ def play_tone(frequency, duration):
         time.sleep(half_period)
         cycles -= 1
 
-#   // play error sound
-#   tone(buzzer, 350, 100);
-#   delay(200);
-#   tone(buzzer, 350, 400);
-
-#   // play notification sound
-#   tone(buzzer, 3000, 250);
-#   delay(300);
-#   tone(buzzer, 2250, 100);
-#   delay(125);
-#   tone(buzzer, 2250, 100);
-
-#   // play cancel sound
-#   tone(buzzer, 500, 250);
-#   delay(300);
-#   tone(buzzer, 300, 150);
 
 def play_success():
     play_tone(1900, 0.25)
@@ -50,6 +34,14 @@ def play_cancel():
     play_tone(500, 0.25)
     time.sleep(0.3)
     play_tone(300, 0.15)
+
+def play_notification():
+    play_tone(3000, 0.25)
+    time.sleep(0.3)
+    play_tone(2250, 0.1)
+    time.sleep(0.125)
+    play_tone(2250, 0.1)
+
 
 # when starting up
     # playsetup
