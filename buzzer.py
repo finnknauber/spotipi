@@ -21,7 +21,6 @@ def play_tone(frequency, duration):
 #   tone(buzzer, 350, 100);
 #   delay(200);
 #   tone(buzzer, 350, 400);
-#   delay(500);
 
 #   // play notification sound
 #   tone(buzzer, 3000, 250);
@@ -36,11 +35,12 @@ def play_tone(frequency, duration):
 #   tone(buzzer, 300, 150);
 
 def play_success():
-    play_tone(2000, 0.25)
-    time.sleep(0.3)
-    play_tone(2200, 0.15)
+    play_tone(1900, 0.25)
+    time.sleep(0.02)
+    play_tone(2500, 0.25)
     GPIO.output(18, GPIO.LOW)
     GPIO.cleanup()
+
 
 # when starting up
     # playsetup
