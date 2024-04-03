@@ -17,9 +17,24 @@ def play_tone(frequency, duration):
         time.sleep(half_period)
 
 
-play_tone(500, 0.5)
-time.sleep(1)
-play_tone(1000, 0.5)
-GPIO.output(18, GPIO.LOW)
-GPIO.cleanup()
+def play_success():
+    play_tone(500, 0.5)
+    time.sleep(1)
+    play_tone(1000, 0.5)
+    GPIO.output(18, GPIO.LOW)
+    GPIO.cleanup()
+
+# when starting up
+    # playsetup
+    # playstartup
+
+# when connecting to wifi
+    # playsuccess
+    # playerror
+
+# when writing to tag or reading
+    # playsong
+    # wrotesong
+
+play_success()
 
