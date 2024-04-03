@@ -46,6 +46,10 @@ def play_error():
     time.sleep(0.1)
     play_tone(350, 0.4)
 
+def play_cancel():
+    play_tone(500, 0.25)
+    time.sleep(0.3)
+    play_tone(300, 0.15)
 
 # when starting up
     # playsetup
@@ -59,5 +63,5 @@ def play_error():
     # playsong
     # wrotesong
 
-play_success()
+play_cancel()
 
