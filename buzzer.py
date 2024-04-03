@@ -41,6 +41,11 @@ def play_success():
     GPIO.output(18, GPIO.LOW)
     GPIO.cleanup()
 
+def play_error():
+    play_tone(350, 0.1)
+    time.sleep(0.1)
+    play_tone(350, 0.4)
+
 
 # when starting up
     # playsetup
