@@ -10,11 +10,12 @@ def play_tone(frequency, duration):
     half_period = period / 2.0
     cycles = int(duration / period)
 
-    for _ in range(cycles):
+    while cycles > 0:
         GPIO.output(18, GPIO.HIGH)
         time.sleep(half_period)
         GPIO.output(18, GPIO.LOW)
         time.sleep(half_period)
+        cycles -= 1
 
 #   // play error sound
 #   tone(buzzer, 350, 100);
