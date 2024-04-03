@@ -94,7 +94,7 @@ def write():
     print(link)
     event.set()
     writeTag(link)
-    play_wroteSong()
+    # play_wroteSong()
     event.clear()
     return "Written"
 
@@ -133,11 +133,11 @@ def reader():
                         print("New Song, playing", songlink)
                         lastSong = songlink
                         play_spotify(songlink)
-                        play_song()
+                        # play_song()
                     elif lastSong == songlink and time.time() > last_read + 3:
                         print("Same song, playing again")
                         play_spotify(songlink)
-                        play_song()
+                        # play_song()
                 else:
                     print("not a spotify link: ", text)
                 last_read = time.time()
@@ -162,10 +162,10 @@ if access_point.is_running():
     access_point.stop()
 
 if not internet_on():
-    play_setup()
+    # play_setup()
     access_point.start()
 else:
-    play_startup()
+    # play_startup()
     start_spotipi()
 
 app.run(debug=False, host="0.0.0.0", port=80)
