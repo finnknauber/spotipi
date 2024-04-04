@@ -11,10 +11,10 @@ from spotify import (
     get_ip_address,
     play_spotify,
 )
-from buzzer import *
 import urllib
 import time
 import os
+import pygame
 
 
 app = Flask(__name__, template_folder="./")
@@ -94,7 +94,6 @@ def write():
     print(link)
     event.set()
     writeTag(link)
-    play_wroteSong()
     event.clear()
     return "Written"
 
@@ -133,15 +132,13 @@ def reader():
                         print("New Song, playing", songlink)
                         lastSong = songlink
                         play_spotify(songlink)
-                        play_song()
                     elif lastSong == songlink and time.time() > last_read + 3:
                         print("Same song, playing again")
                         play_spotify(songlink)
-                        play_song()
                 else:
                     print("not a spotify link: ", text)
                 last_read = time.time()
-    finally:
+    except:
         print("cleaning up reader")
         GPIO.cleanup()
 
@@ -162,10 +159,14 @@ if access_point.is_running():
     access_point.stop()
 
 if not internet_on():
-    play_setup()
     access_point.start()
 else:
-    play_startup()
+    pygame.mixer.init()
+    pygame.mixer.music.load("startup.mp3")
+    pygame.mixer.music.play()
+    while pygame.mixer.music.get_busy():
+        continue
+
     start_spotipi()
 
 app.run(debug=False, host="0.0.0.0", port=80)
