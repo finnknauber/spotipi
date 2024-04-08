@@ -1,7 +1,7 @@
 from flask import Flask, render_template, render_template_string, request, redirect
 from PyAccessPoint import pyaccesspoint
+from gpiozero import DigitalInputDevice
 from mfrc522 import ExtendedMFRC522
-from mute_shake import mute_on_shake
 from threading import Thread, Event
 from write import writeTag
 import RPi.GPIO as GPIO
@@ -147,8 +147,9 @@ def reader():
 
 def start_spotipi():
     Thread(target=reader).start()
-    Thread(target=mute_on_shake).start()
-    mute_on_shake_setting.set()
+
+def start_app():
+    app.run(debug=False, host="0.0.0.0", port=80)
 
 
 def internet_on():
@@ -173,5 +174,16 @@ else:
 
     start_spotipi()
 
-app.run(debug=False, host="0.0.0.0", port=80)
+# Thread(target=start_app).start()
+
+input = DigitalInputDevice(4)
+last_shake = time.time()
+muted = False
+
+while True:
+    if input.value:
+        if time.time() - last_shake > 3:
+            last_shake = time.time()
+            print("Mute!")
+            os.system("amixer set Master toggle")
 
