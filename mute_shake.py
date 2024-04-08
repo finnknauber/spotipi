@@ -7,5 +7,6 @@ def mute_on_shake():
 
     while True:
         if input.value:
+            print("Mute!")
             if time.time() - last_shake > 3:
-                print("Mute!")
+                pass
