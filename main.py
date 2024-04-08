@@ -1,5 +1,6 @@
 from flask import Flask, render_template, render_template_string, request, redirect
 from PyAccessPoint import pyaccesspoint
+from gpiozero import DigitalInputDevice
 from mfrc522 import ExtendedMFRC522
 from threading import Thread, Event
 from write import writeTag
@@ -20,6 +21,7 @@ import pygame
 app = Flask(__name__, template_folder="./")
 access_point = pyaccesspoint.AccessPoint(ssid="SpotiPi Setup")
 event = Event()
+mute_on_shake_setting = Event()
 
 SPOTIFY_PORT = 80
 
@@ -112,6 +114,17 @@ def spotifycallback():
     return redirect("/")
 
 
+def mute_on_shake():
+    input = DigitalInputDevice(4)
+    last_shake = time.time()
+
+    while True:
+        if input.value:
+            if mute_on_shake_setting.is_set():
+                if time.time() - last_shake > 3:
+                    print("Mute!")
+
+
 def reader():
     last_read = time.time()
     reader = ExtendedMFRC522()
@@ -145,6 +158,8 @@ def reader():
 
 def start_spotipi():
     Thread(target=reader).start()
+    Thread(target=mute_on_shake).start()
+    mute_on_shake_setting.set()
 
 
 def internet_on():

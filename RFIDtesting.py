@@ -21,6 +21,8 @@ def readTag():
             id, text = reader.read_no_block()
             if id:
                 print("Read text:", text)
+                GPIO.cleanup()
+                return
     finally:
         print("cleaning up reader")
         GPIO.cleanup()
