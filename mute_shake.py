@@ -11,4 +11,4 @@ def mute_on_shake():
             if time.time() - last_shake > 3:
                 last_shake = time.time()
                 print("Mute!")
-                os.system("amixer set Master mute")
+                os.system("amixer -D pulse sset Master mute")
