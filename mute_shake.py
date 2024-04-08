@@ -11,4 +11,4 @@ import os
 #             last_shake = time.time()
 #             print("Mute!")
 
-os.system("amixer set Master toggle")
+os.system("amixer set PCM toggle")
