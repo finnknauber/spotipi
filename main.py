@@ -1,7 +1,7 @@
 from flask import Flask, render_template, render_template_string, request, redirect
 from PyAccessPoint import pyaccesspoint
-from gpiozero import DigitalInputDevice
 from mfrc522 import ExtendedMFRC522
+from mute_shake import mute_on_shake
 from threading import Thread, Event
 from write import writeTag
 import RPi.GPIO as GPIO
@@ -112,17 +112,6 @@ def spotifycallback():
     code = request.args.get("code")
     get_access_token(code)
     return redirect("/")
-
-
-def mute_on_shake():
-    input = DigitalInputDevice(4)
-    last_shake = time.time()
-
-    while True:
-        if input.value:
-            if mute_on_shake_setting.is_set():
-                if time.time() - last_shake > 3:
-                    print("Mute!")
 
 
 def reader():
