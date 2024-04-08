@@ -114,6 +114,18 @@ def spotifycallback():
     return redirect("/")
 
 
+def mute_on_shake():
+    input = DigitalInputDevice(4)
+    last_shake = time.time()
+
+    while True:
+        if input.value:
+            if mute_on_shake_setting.is_set():
+                if time.time() - last_shake > 3:
+                    print("Mute!")
+                    os.system("amixer set PCM toggle")
+
+
 def reader():
     last_read = time.time()
     reader = ExtendedMFRC522()
@@ -147,9 +159,8 @@ def reader():
 
 def start_spotipi():
     Thread(target=reader).start()
-
-def start_app():
-    app.run(debug=False, host="0.0.0.0", port=80)
+    Thread(target=mute_on_shake).start()
+    mute_on_shake_setting.set()
 
 
 def internet_on():
@@ -160,30 +171,19 @@ def internet_on():
         return False
 
 
-# if access_point.is_running():
-#     access_point.stop()
+if access_point.is_running():
+    access_point.stop()
 
-# if not internet_on():
-#     access_point.start()
-# else:
-#     pygame.mixer.init()
-#     pygame.mixer.music.load("startup.mp3")
-#     pygame.mixer.music.play()
-#     while pygame.mixer.music.get_busy():
-#         continue
+if not internet_on():
+    access_point.start()
+else:
+    pygame.mixer.init()
+    pygame.mixer.music.load("startup.mp3")
+    pygame.mixer.music.play()
+    while pygame.mixer.music.get_busy():
+        continue
 
-#     start_spotipi()
+    start_spotipi()
 
-# Thread(target=start_app).start()
-
-input = DigitalInputDevice(4)
-last_shake = time.time()
-muted = False
-
-while True:
-    if input.value:
-        if time.time() - last_shake > 3:
-            last_shake = time.time()
-            print("Mute!")
-            os.system("amixer set Master toggle")
+app.run(debug=False, host="0.0.0.0", port=80)
 
