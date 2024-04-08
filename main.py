@@ -160,19 +160,19 @@ def internet_on():
         return False
 
 
-if access_point.is_running():
-    access_point.stop()
+# if access_point.is_running():
+#     access_point.stop()
 
-if not internet_on():
-    access_point.start()
-else:
-    pygame.mixer.init()
-    pygame.mixer.music.load("startup.mp3")
-    pygame.mixer.music.play()
-    while pygame.mixer.music.get_busy():
-        continue
+# if not internet_on():
+#     access_point.start()
+# else:
+#     pygame.mixer.init()
+#     pygame.mixer.music.load("startup.mp3")
+#     pygame.mixer.music.play()
+#     while pygame.mixer.music.get_busy():
+#         continue
 
-    start_spotipi()
+#     start_spotipi()
 
 # Thread(target=start_app).start()
 
