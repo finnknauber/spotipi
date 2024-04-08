@@ -4,6 +4,7 @@ import time
 def mute_on_shake():
     input = DigitalInputDevice(4)
     last_shake = time.time()
+    print("Mute on shake")
 
     while True:
         if input.value:
