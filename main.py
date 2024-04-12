@@ -130,6 +130,16 @@ def mute_on_shake():
                     print("Mute!")
                     os.system("amixer set PCM toggle")
 
+def play_sound(name):
+    try:
+        pygame.mixer.init()
+        pygame.mixer.music.load(name)
+        pygame.mixer.music.play()
+        while pygame.mixer.music.get_busy():
+            continue
+    except Exception as e:
+        print("Error playing", e)
+
 
 def reader():
     last_read = time.time()
@@ -151,24 +161,11 @@ def reader():
                         print("New Song, playing", songlink)
                         lastSong = songlink
                         play_spotify(songlink)
-                        try:
-
-                            pygame.mixer.init()
-                            pygame.mixer.music.load("success.mp3")
-                            pygame.mixer.music.play()
-                            while pygame.mixer.music.get_busy():
-                                continue
-                        except Exception as e:
-                            print("Error playing", e)
+                        play_sound("success.mp3")
                     elif lastSong == songlink and time.time() > last_read + 3:
                         print("Same song, playing again")
                         play_spotify(songlink)
-                        pygame.mixer.init()
-                        pygame.mixer.music.load("sucess.mp3")
-                        pygame.mixer.music.play()
-                        while pygame.mixer.music.get_busy():
-                            continue
-
+                        play_sound("success.mp3")
                 else:
                     print("not a spotify link: ", text)
                 last_read = time.time()
@@ -197,12 +194,7 @@ if access_point.is_running():
 if not internet_on():
     access_point.start()
 else:
-    pygame.mixer.init()
-    pygame.mixer.music.load("startup.mp3")
-    pygame.mixer.music.play()
-    while pygame.mixer.music.get_busy():
-        continue
-
+    play_sound("startup.mp3")
     start_spotipi()
 
 app.run(debug=False, host="0.0.0.0", port=80)
