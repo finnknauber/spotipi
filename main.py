@@ -158,10 +158,10 @@ def reader():
                         text.split("/")[-2] + ":" + text.split("/")[-1].split("?")[0]
                     )
                     if lastSong != songlink:
+                        Thread(target=play_sound, args=("success.mp3",)).start()
                         print("New Song, playing", songlink)
                         lastSong = songlink
                         play_spotify(songlink)
-                        play_sound("success.mp3")
                     elif lastSong == songlink and time.time() > last_read + 3:
                         print("Same song, playing again")
                         play_spotify(songlink)
