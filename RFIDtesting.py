@@ -23,7 +23,7 @@ def readTag():
                 print("Read text:", text)
                 GPIO.cleanup()
                 return
-    finally:
+    except:
         print("cleaning up reader")
         GPIO.cleanup()
 
