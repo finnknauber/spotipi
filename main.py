@@ -97,6 +97,11 @@ def write():
     event.set()
     writeTag(link)
     event.clear()
+    pygame.mixer.init()
+    pygame.mixer.music.load("sucess.mp3")
+    pygame.mixer.music.play()
+    while pygame.mixer.music.get_busy():
+        continue
     return "Written"
 
 
@@ -146,9 +151,20 @@ def reader():
                         print("New Song, playing", songlink)
                         lastSong = songlink
                         play_spotify(songlink)
+                        pygame.mixer.init()
+                        pygame.mixer.music.load("success.mp3")
+                        pygame.mixer.music.play()
+                        while pygame.mixer.music.get_busy():
+                            continue
                     elif lastSong == songlink and time.time() > last_read + 3:
                         print("Same song, playing again")
                         play_spotify(songlink)
+                        pygame.mixer.init()
+                        pygame.mixer.music.load("sucess.mp3")
+                        pygame.mixer.music.play()
+                        while pygame.mixer.music.get_busy():
+                            continue
+
                 else:
                     print("not a spotify link: ", text)
                 last_read = time.time()
