@@ -151,11 +151,15 @@ def reader():
                         print("New Song, playing", songlink)
                         lastSong = songlink
                         play_spotify(songlink)
-                        pygame.mixer.init()
-                        pygame.mixer.music.load("success.mp3")
-                        pygame.mixer.music.play()
-                        while pygame.mixer.music.get_busy():
-                            continue
+                        try:
+
+                            pygame.mixer.init()
+                            pygame.mixer.music.load("success.mp3")
+                            pygame.mixer.music.play()
+                            while pygame.mixer.music.get_busy():
+                                continue
+                        except Exception as e:
+                            print("Error playing", e)
                     elif lastSong == songlink and time.time() > last_read + 3:
                         print("Same song, playing again")
                         play_spotify(songlink)
