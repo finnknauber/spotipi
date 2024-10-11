@@ -2,3 +2,4 @@ spotipy
 pyaccesspoint
 flask
 git+https://github.com/Lurkars/MFRC522-python.git
+

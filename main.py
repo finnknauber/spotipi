@@ -181,11 +181,13 @@ def start_spotipi():
 
 
 def internet_on():
-    try:
-        urllib.request.urlopen("https://spotify.com", timeout=5)
-        return True
-    except:
-        return False
+    for i in range(3):
+        try:
+            urllib.request.urlopen("https://spotify.com", timeout=5)
+            return True
+        except: pass
+
+    return False
 
 
 if access_point.is_running():
