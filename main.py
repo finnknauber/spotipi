@@ -62,7 +62,7 @@ def wifi():
     os.system("wpa_supplicant -B -c/etc/wpa_supplicant/wpa_supplicant.conf -i wlan0")
     connect_wifi(ssid, password)
     start_spotipi()
-    return "Connecting"
+    return "Connecting... You can close this page."
 
 
 def connect_wifi(ssid, password):
@@ -190,6 +190,7 @@ def internet_on():
     return False
 
 
+
 if access_point.is_running():
     access_point.stop()
 
@@ -201,3 +202,27 @@ else:
 
 app.run(debug=False, host="0.0.0.0", port=80)
 
+
+
+
+
+
+# check if wifi is connected
+# if not, start access point
+    # wait for wifi credentials
+    # connect to wifi and continue below
+
+# start threads
+# - reading rfid
+# - mute on shake
+
+# start web server
+
+
+# let user log in to spotify
+
+# if user is logged in
+# allow reading tags => play song
+# allow writing to tags
+
+### make it work better
