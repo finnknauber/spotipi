@@ -67,7 +67,7 @@ class ST25DV_IO:
 if __name__ == "__main__":
     # Replace `None` with actual GPO, LPD, and serial if needed
     st25dv_io = ST25DV_IO(i2c_bus=1, serial=None)  # Use I2C bus 1, no serial for this example
-    device_address = 0x53  # Replace with the actual device address (e.g., 0x2D)
+    device_address = 0x57  # Replace with the actual device address (e.g., 0x2D)
     
     if st25dv_io.ST25DV_IO_IsDeviceReady(device_address):
         print("Device is ready.")
